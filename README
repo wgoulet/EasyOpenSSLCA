@@ -1,0 +1,28 @@
+EasyOpenSSLCA
+
+A dead simple command line CA using openssl and make.
+
+This project leverages the bootstrap CA that is bundled with FreeRADIUS.
+For now, it just generates a very basic PKI heirarchy 
+(root CA + subCA for issuing client certs). In the future, it will be
+expanded to add support for different heirarchies, cross certs for
+bridge CAs, and possible MofN support for root CA private key
+protection.
+
+To create certs, simply type:
+make all
+
+This will generate the root CA cert (cert.pem) along with it's private 
+key (protected with password from ca.cnf) as well as a subCA cert
+(subca.pem) and it's private key.
+
+There are other targets, right now only 'make all', 'make index.txt',
+'make serial', 'make ca', and 'make subca' work. 
+
+It's best to just use make all.
+
+If you want to clean up everything, use 'make destroycerts'.
+
+Prerequisites:
+make
+openssl (any version will do)
