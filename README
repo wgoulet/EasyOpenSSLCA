@@ -26,3 +26,5 @@ If you want to clean up everything, use 'make destroycerts'.
 Prerequisites:
 make
 openssl (any version will do)
+
+test
