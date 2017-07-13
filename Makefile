@@ -92,7 +92,7 @@ subca.p12: subca.crt
 	openssl pkcs12 -export -in subca.crt -inkey subca.key -out subca.p12  -passin pass:$(PASSWORD_SUBCA) -passout pass:$(PASSWORD_SUBCA)
 
 subca.pem: subca.p12
-	openssl pkcs12 -in subca.p12 -out subca.pem -passin pass:$(PASSWORD_SUBCA) -passout pass:$(PASSWORD_SUBCA)
+	openssl pkcs12 -in subca.p12 -out subca.pem -nokeys -passin pass:$(PASSWORD_SUBCA) -passout pass:$(PASSWORD_SUBCA)
 
 .PHONY: subca.vrfy
 subca.vrfy: ca.pem
@@ -105,6 +105,7 @@ subca.vrfy: ca.pem
 #
 ######################################################################
 client.csr client.key: client.cnf
+	cat client.cnf.master | sed 's/REPLACEME/$(SUBJECT)/' > client.cnf
 	openssl req -new -nodes -out client.csr -keyout client.key -config ./client.cnf
 
 client.crt: client.csr ca.pem ca.key
@@ -115,7 +116,7 @@ client.p12: client.crt
 	openssl pkcs12 -export -in client.crt -inkey client.key -out client.p12  -passin pass:$(PASSWORD_CLIENT) -passout pass:$(PASSWORD_CLIENT)
 
 client.pem: client.p12
-	openssl pkcs12 -in client.p12 -out client.pem -passin pass:$(PASSWORD_CLIENT) -nodes -passout pass:$(PASSWORD_CLIENT)
+	openssl pkcs12 -in client.p12 -out client.pem -nokeys -passin pass:$(PASSWORD_CLIENT) -nodes -passout pass:$(PASSWORD_CLIENT)
 	cp client.pem $(USER_NAME).pem
 
 .PHONY: client.vrfy

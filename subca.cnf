@@ -46,10 +46,10 @@ output_password		= whatever
 x509_extensions		= v3_ca
 
 [subca]
-countryName		= FR
-stateOrProvinceName	= Radius
-localityName		= Somewhere
-organizationName	= Example Inc.
+countryName		= US
+stateOrProvinceName	= Illinois
+localityName		= Chicago
+organizationName	= Demo Org
 emailAddress		= admin@example.com
 commonName		= "subca"
 

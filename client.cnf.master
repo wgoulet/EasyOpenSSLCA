@@ -7,10 +7,10 @@ certs			= $dir
 crl_dir			= $dir/crl
 database		= $dir/index.txt
 new_certs_dir		= $dir
-certificate		= $dir/ca.pem
+certificate		= $dir/subca.pem
 serial			= $dir/serial
 crl			= $dir/crl.pem
-private_key		= $dir/ca.key
+private_key		= $dir/subca.key
 RANDFILE		= $dir/.rand
 name_opt		= ca_default
 cert_opt		= ca_default
@@ -19,7 +19,6 @@ default_crl_days	= 30
 default_md		= sha256
 preserve		= no
 policy			= policy_match
-unique_subject		= no
 
 [ policy_match ]
 countryName		= match
@@ -40,21 +39,23 @@ emailAddress		= optional
 
 [ req ]
 prompt			= no
-distinguished_name	= certificate_authority
+distinguished_name	= client
 default_bits		= 2048
 input_password		= whatever
 output_password		= whatever
-x509_extensions		= v3_ca
+x509_extensions		= v3_req
 
-[certificate_authority]
+[client]
 countryName		= US
 stateOrProvinceName	= Illinois
 localityName		= Chicago
 organizationName	= Demo Org
-emailAddress		= admin@example.com
-commonName		= "Example Certificate Authority"
+commonName		= REPLACEME
 
-[v3_ca]
-subjectKeyIdentifier	= hash
-authorityKeyIdentifier	= keyid:always,issuer:always
-basicConstraints	= CA:true
+[v3_req]
+basicConstraints 	= CA:FALSE
+keyUsage 		= digitalSignature, nonRepudiation, keyEncipherment
+subjectAltName		= @alt_names
+
+[alt_names]
+DNS.1 = REPLACEME

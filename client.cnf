@@ -40,17 +40,17 @@ emailAddress		= optional
 [ req ]
 prompt			= no
 distinguished_name	= client
-default_bits		= 768
+default_bits		= 2048
 input_password		= whatever
 output_password		= whatever
 x509_extensions		= v3_req
 
 [client]
-countryName		= FR
-stateOrProvinceName	= Radius
-localityName		= Somewhere
-organizationName	= Example Inc.
-commonName		= autotest5.vfidev.com
+countryName		= US
+stateOrProvinceName	= Illinois
+localityName		= Chicago
+organizationName	= Demo Org
+commonName		= scandemo119.vfidev.com
 
 [v3_req]
 basicConstraints 	= CA:FALSE
@@ -58,5 +58,4 @@ keyUsage 		= digitalSignature, nonRepudiation, keyEncipherment
 subjectAltName		= @alt_names
 
 [alt_names]
-DNS.1 = wgtest.tesco.com
-IP.1 = 127.0.0.1
+DNS.1 = scandemo119.vfidev.com
