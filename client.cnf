@@ -16,7 +16,7 @@ name_opt		= ca_default
 cert_opt		= ca_default
 default_days		= 365
 default_crl_days	= 30
-default_md		= md5
+default_md		= sha256
 preserve		= no
 policy			= policy_match
 
@@ -40,14 +40,23 @@ emailAddress		= optional
 [ req ]
 prompt			= no
 distinguished_name	= client
-default_bits		= 2048
+default_bits		= 768
 input_password		= whatever
 output_password		= whatever
+x509_extensions		= v3_req
 
 [client]
 countryName		= FR
 stateOrProvinceName	= Radius
 localityName		= Somewhere
 organizationName	= Example Inc.
-emailAddress		= user@example.com
-commonName		= user@example.com
+commonName		= autotest5.vfidev.com
+
+[v3_req]
+basicConstraints 	= CA:FALSE
+keyUsage 		= digitalSignature, nonRepudiation, keyEncipherment
+subjectAltName		= @alt_names
+
+[alt_names]
+DNS.1 = wgtest.tesco.com
+IP.1 = 127.0.0.1

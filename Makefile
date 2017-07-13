@@ -62,7 +62,7 @@ ca.csr ca.key: ca.cnf
 	-config ./ca.cnf
 
 ca.pem: ca.csr ca.key
-	openssl x509 -req -in ca.csr -signkey ca.key -out ca.pem -extfile ./ca.cnf -passin pass:$(PASSWORD_CA)
+	openssl x509 -req -in ca.csr -signkey ca.key -out ca.pem -extfile ./ca.cnf -extensions v3_ca -passin pass:$(PASSWORD_CA)
 
 ca.der: ca.pem
 	openssl x509 -inform PEM -outform DER -in ca.pem -out ca.der
@@ -86,7 +86,7 @@ subca.csr subca.key: subca.cnf
 	openssl req -new  -out subca.csr -keyout subca.key -config ./subca.cnf
 
 subca.crt: subca.csr ca.key ca.pem
-	openssl ca -batch -keyfile ca.key -cert ca.pem -in subca.csr  -key $(PASSWORD_CA) -out subca.crt -config ./subca.cnf
+	openssl ca -batch -keyfile ca.key -cert ca.pem -in subca.csr  -key $(PASSWORD_CA) -out subca.crt -config ./subca.cnf -extensions v3_ca -extfile ./subca.cnf
 
 subca.p12: subca.crt
 	openssl pkcs12 -export -in subca.crt -inkey subca.key -out subca.p12  -passin pass:$(PASSWORD_SUBCA) -passout pass:$(PASSWORD_SUBCA)
@@ -105,16 +105,17 @@ subca.vrfy: ca.pem
 #
 ######################################################################
 client.csr client.key: client.cnf
-	openssl req -new  -out client.csr -keyout client.key -config ./client.cnf
+	openssl req -new -nodes -out client.csr -keyout client.key -config ./client.cnf
 
 client.crt: client.csr ca.pem ca.key
-	openssl ca -batch -keyfile subca.key -cert subca.pem -in client.csr  -key $(PASSWORD_SUBCA) -out client.crt -config ./client.cnf
+	openssl ca -batch -keyfile subca.key -cert subca.pem -in client.csr  -key $(PASSWORD_SUBCA) -out client.crt -config ./client.cnf -extensions v3_req -extfile client.cnf
+	cat client.crt client.key subca.pem ca.pem > chain.pem
 
 client.p12: client.crt
 	openssl pkcs12 -export -in client.crt -inkey client.key -out client.p12  -passin pass:$(PASSWORD_CLIENT) -passout pass:$(PASSWORD_CLIENT)
 
 client.pem: client.p12
-	openssl pkcs12 -in client.p12 -out client.pem -passin pass:$(PASSWORD_CLIENT) -passout pass:$(PASSWORD_CLIENT)
+	openssl pkcs12 -in client.p12 -out client.pem -passin pass:$(PASSWORD_CLIENT) -nodes -passout pass:$(PASSWORD_CLIENT)
 	cp client.pem $(USER_NAME).pem
 
 .PHONY: client.vrfy
