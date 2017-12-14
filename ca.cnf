@@ -55,6 +55,9 @@ emailAddress		= admin@example.com
 commonName		= "Example Certificate Authority"
 
 [v3_ca]
-subjectKeyIdentifier	= hash
+subjectKeyIdentifier	= 97F962D2404E5C6A9C946BF07586950E824CA942
 authorityKeyIdentifier	= keyid:always,issuer:always
 basicConstraints	= CA:true
+
+[subca_cert]
+subjectKeyIdentifier    = 97F962D2404E5C6A9C946BF07586950E824CA942

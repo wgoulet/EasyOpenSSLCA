@@ -83,6 +83,7 @@ ca2.der: ca2.pem
 #
 ######################################################################
 subca.csr subca.key: subca.cnf
+	cat subca.cnf.master | sed 's/REPLACEMESKI/$(SKI)/' > subca.cnf
 	openssl req -new  -out subca.csr -keyout subca.key -config ./subca.cnf
 
 subca.crt: subca.csr ca.key ca.pem

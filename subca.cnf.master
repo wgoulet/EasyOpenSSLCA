@@ -22,9 +22,9 @@ policy			= policy_match
 x509_extensions		= v3_ext
 
 [ policy_match ]
-countryName		= match
-stateOrProvinceName	= match
-organizationName	= match
+countryName		= supplied
+stateOrProvinceName	= supplied
+organizationName	= supplied
 organizationalUnitName	= optional
 commonName		= supplied
 emailAddress		= optional
@@ -40,29 +40,22 @@ emailAddress		= optional
 
 [ req ]
 prompt			= no
-distinguished_name	= client
+distinguished_name	= subca
 default_bits		= 2048
 input_password		= whatever
 output_password		= whatever
-x509_extensions		= v3_req
+x509_extensions		= v3_ca
 
-[client]
+[subca]
 countryName		= US
 stateOrProvinceName	= Illinois
 localityName		= Chicago
 organizationName	= Demo Org
-commonName		= weirdluda
+emailAddress		= admin@example.com
+commonName		= "subca"
 
-[v3_req]
-basicConstraints 	= CA:FALSE
-keyUsage 		= digitalSignature, nonRepudiation, keyEncipherment
-subjectAltName		= @alt_names
-authorityKeyIdentifier	= keyid
-extendedKeyUsage	= serverAuth,clientAuth
+[v3_ca]
+subjectKeyIdentifier	= REPLACEMESKI
+authorityKeyIdentifier	= keyid:always,issuer:always
+basicConstraints	= CA:true
 
-[v3_ext]
-authorityKeyIdentifier	= keyid
-extendedKeyUsage	= serverAuth,clientAuth
-
-[alt_names]
-DNS.1 = weirdluda

@@ -19,11 +19,12 @@ default_crl_days	= 30
 default_md		= sha256
 preserve		= no
 policy			= policy_match
+x509_extensions		= v3_ext
 
 [ policy_match ]
-countryName		= match
-stateOrProvinceName	= match
-organizationName	= match
+countryName		= supplied
+stateOrProvinceName	= supplied
+organizationName	= supplied
 organizationalUnitName	= optional
 commonName		= supplied
 emailAddress		= optional
@@ -54,6 +55,7 @@ emailAddress		= admin@example.com
 commonName		= "subca"
 
 [v3_ca]
-subjectKeyIdentifier	= hash
+subjectKeyIdentifier	= B677FA6948479F5312D5C2EA07327607D1970719
 authorityKeyIdentifier	= keyid:always,issuer:always
 basicConstraints	= CA:true
+

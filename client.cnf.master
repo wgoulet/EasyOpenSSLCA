@@ -19,6 +19,7 @@ default_crl_days	= 30
 default_md		= sha256
 preserve		= no
 policy			= policy_match
+x509_extensions		= v3_ext
 
 [ policy_match ]
 countryName		= match
@@ -56,6 +57,12 @@ commonName		= REPLACEME
 basicConstraints 	= CA:FALSE
 keyUsage 		= digitalSignature, nonRepudiation, keyEncipherment
 subjectAltName		= @alt_names
+authorityKeyIdentifier	= keyid
+extendedKeyUsage	= serverAuth,clientAuth
+
+[v3_ext]
+authorityKeyIdentifier	= keyid
+extendedKeyUsage	= serverAuth,clientAuth
 
 [alt_names]
 DNS.1 = REPLACEME
